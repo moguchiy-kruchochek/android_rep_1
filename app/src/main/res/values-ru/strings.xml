@@ -2,4 +2,10 @@
 <resources>
     <string name="app_name">НМедиа</string>
     <string name="hello">НМедиа!</string>
+    <string name="likes_count">10</string>
+    <string name="shared_count">5</string>
+    <string name="views_count">5</string>
+    <string name="views_counter_icon">иконка количества просмотров</string>
+    <string name="shared_count_icon">иконка количества репостов</string>
+    <string name="likes_count_icon">иконка количества лайков</string>
 </resources>

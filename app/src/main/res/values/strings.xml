@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">NMedia</string>
     <string name="hello">NMedia!</string>
+    <string name="likes_count">10</string>
+    <string name="shared_count">5</string>
+    <string name="views_count">5</string>
+    <string name="views_counter_icon">views_counter_icon</string>
+    <string name="shared_count_icon">shared_count_icon</string>
+    <string name="likes_count_icon">likes_count_icon</string>
 </resources>
