@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             )
             insets
         }
-        val countersFormating = CountersFormatting()
+        val countersFormatting = CountersFormatting()
         val post = Post(
             id = 1,
             author = "Нетология. Университет интернет-профессий будущего",
@@ -46,9 +46,9 @@ class MainActivity : AppCompatActivity() {
             if (post.likedByMe) {
                 likesIcon.setImageResource(R.drawable.ic_liked_24)
             }
-            likesCount.text = countersFormating.toShorted(post.likes)
-            sharedCount.text = countersFormating.toShorted(post.shared)
-            viewsCount.text = countersFormating.toShorted(post.views)
+            likesCount.text = countersFormatting.toShorted(post.likes)
+            sharedCount.text = countersFormatting.toShorted(post.shared)
+            viewsCount.text = countersFormatting.toShorted(post.views)
 
             likesIcon.setOnClickListener {
                 post.likedByMe = !post.likedByMe
@@ -56,12 +56,12 @@ class MainActivity : AppCompatActivity() {
                     if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
                 )
                 if (post.likedByMe) post.likes += 1 else post.likes -= 1
-                likesCount.text = countersFormating.toShorted(post.likes)
+                likesCount.text = countersFormatting.toShorted(post.likes)
             }
 
             sharedIcon.setOnClickListener {
                 post.shared += 1
-                sharedCount.text = countersFormating.toShorted(post.shared)
+                sharedCount.text = countersFormatting.toShorted(post.shared)
             }
         }
     }
