@@ -3,8 +3,9 @@ package ru.netology.nmedia
 import android.icu.text.DecimalFormat
 import kotlin.math.floor
 
-class CountFormatter {
-    fun numbersToShorted(number: Int): String {
+class CountersFormatting {
+
+    fun toShorted(number: Int): String {
 
         return when {
 
