@@ -5,11 +5,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import ru.netology.nmedia.CountersFormatting
-import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.viewmodel.PostViewModel
 import androidx.activity.viewModels
+import ru.netology.nmedia.postsadapter.PostsAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,30 +31,13 @@ class MainActivity : AppCompatActivity() {
             )
             insets
         }
-        val countersFormatting = CountersFormatting()
-
-        viewModel.data.observe(this) { post ->
-            with(binding) {
-                author.text = post.author
-                published.text = post.published
-                content.text = post.content
-                if (post.likedByMe) {
-                    likesIcon.setImageResource(R.drawable.ic_liked_24)
-                } else {
-                    likesIcon.setImageResource(R.drawable.ic_like_24)
-                }
-                likesCount.text = countersFormatting.toShorted(post.likes)
-                sharedCount.text = countersFormatting.toShorted(post.shared)
-                viewsCount.text = countersFormatting.toShorted(post.views)
-            }
-
-            binding.sharedIcon.setOnClickListener {
-                viewModel.share()
-            }
-
-            binding.likesIcon.setOnClickListener {
-                viewModel.like()
-            }
+        val adapter = PostsAdapter(
+            { viewModel.likeById(it.id) },
+            { viewModel.share(it.id) }
+        )
+        binding.container.adapter = adapter
+        viewModel.data.observe(this) { posts ->
+            adapter.submitList(posts)
         }
     }
 }
