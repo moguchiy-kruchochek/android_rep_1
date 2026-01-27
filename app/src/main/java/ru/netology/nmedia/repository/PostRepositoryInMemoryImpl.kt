@@ -6,9 +6,10 @@ import ru.netology.nmedia.dto.Post
 
 class PostRepositoryInMemoryImpl : PostRepository {
 
+    var nextID: Int = 1
     var posts = listOf(
         Post(
-            id = 1,
+            id = nextID++,
             author = "Нетология. Университет интернет-профессий будущего",
             published = "14 января в 16:00",
             content = "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу." +
@@ -21,7 +22,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             views = 5
         ),
         Post(
-            id = 2,
+            id = nextID++,
             author = "Нетология. Университет интернет-профессий будущего",
             published = "21 января в 16:00",
             content = "Многие из нас: координаторы, аспиранты и эксперты — уедут в отпуск и будут недоступны для общения." +
@@ -35,7 +36,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             views = 2
         ),
         Post(
-            id = 3,
+            id = nextID++,
             author = "Нетология. Университет интернет-профессий будущего",
             published = "21 января в 16:10",
             content = "Добрый день! Напоминаю, что обучение на обучение на модуле «Разработка приложений на Kotlin» было завершено." +
@@ -50,7 +51,6 @@ class PostRepositoryInMemoryImpl : PostRepository {
             views = 56
         )
     )
-
 
     private val data = MutableLiveData(posts)
 
@@ -74,6 +74,22 @@ class PostRepositoryInMemoryImpl : PostRepository {
                 shared = it.shared + 1
             )
         }
+        data.value = posts
+    }
+
+    override fun save(post: Post) {
+        posts = if (post.id == 0) {
+            listOf(post.copy(id = nextID++)) + posts
+        } else {
+            posts.map {
+                if (it.id != post.id) it else it.copy(content = post.content)
+            }
+        }
+        data.value = posts
+    }
+
+    override fun removeById(id: Int) {
+        posts = posts.filter { id != it.id }
         data.value = posts
     }
 }
