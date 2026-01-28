@@ -95,6 +95,7 @@ class MainActivity : AppCompatActivity() {
 
         with(binding) {
             cancelButton.setOnClickListener {
+                viewModel.cancelEdit()
                 newPostContent.setText("")
                 editingText.text = ""
                 newPostContent.clearFocus()
