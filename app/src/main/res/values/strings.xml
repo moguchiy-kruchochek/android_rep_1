@@ -7,4 +7,12 @@
     <string name="views_counter_icon">views_counter_icon</string>
     <string name="shared_count_icon">shared_count_icon</string>
     <string name="likes_count_icon">likes_count_icon</string>
+    <string name="menu_remove">Remove</string>
+    <string name="post_text">New Post Text…</string>
+    <string name="save_post_button">Save Post</string>
+    <string name="error_empty_content">Error: Empty Content!</string>
+    <string name="menu_edit">Edit</string>
+    <string name="cancel_editing_text">Cancel edited</string>
+    <string name="editing_icon">Editing icon</string>
+    <string name="edit_text">Edit text</string>
 </resources>

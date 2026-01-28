@@ -1,15 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/container"
+        android:id="@+id/recyclerContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/post_card"/>
-</FrameLayout>
+        app:layout_constraintBottom_toTopOf="@id/newPostContent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:listitem="@layout/post_card" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/bottomToolsTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="newPostContent,saveButton"
+        />
+
+    <EditText
+        android:id="@+id/newPostContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:hint="@string/post_text"
+        android:importantForAutofill="no"
+        android:inputType="textImeMultiLine"
+        android:padding="@dimen/common_spacing"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/saveButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerContainer"
+        />
+
+    <ImageButton
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/common_spacing"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/save_post_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/newPostContent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerContainer"
+        app:srcCompat="@drawable/ic_save_48" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/topToolsTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="editIcon, editTextSign"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/editTextGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="backgroundRectangle,editIcon,cancelButton,editTextSign,editingText " />
+
+    <View
+        android:id="@+id/backgroundRectangle"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomToolsTop"
+
+        />
+
+    <ImageView
+        android:id="@+id/editIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/editing_icon"
+        app:layout_constraintBottom_toTopOf="@id/bottomToolsTop"
+        app:srcCompat="@drawable/ic_edit" />
+
+    <ImageButton
+        android:id="@+id/cancelButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/cancel_editing_text"
+        app:layout_constraintBottom_toTopOf="@id/bottomToolsTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_cancel_cross" />
+
+    <TextView
+        android:id="@+id/editTextSign"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/edit_text"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/editingText"
+        app:layout_constraintEnd_toStartOf="@id/cancelButton"
+        app:layout_constraintStart_toEndOf="@+id/editIcon"
+        app:layout_constraintTop_toBottomOf="@id/topToolsTop"
+        app:layout_constraintVertical_chainStyle="spread"
+        tools:ignore="VisualLintLocaleText" />
+
+    <TextView
+        android:id="@+id/editingText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/bottomToolsTop"
+        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
+        app:layout_constraintStart_toEndOf="@+id/editIcon"
+        app:layout_constraintTop_toBottomOf="@id/editTextSign"
+        app:layout_constraintVertical_chainStyle="spread"
+        tools:ignore="VisualLintLocaleText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
