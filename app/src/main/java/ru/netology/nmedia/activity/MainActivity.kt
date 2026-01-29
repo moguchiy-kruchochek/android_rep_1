@@ -101,7 +101,6 @@ class MainActivity : AppCompatActivity() {
                 newPostContent.clearFocus()
                 AndroidUtils.hideKeyboard(newPostContent)
                 editTextGroup.visibility = View.GONE
-
             }
         }
     }
