@@ -74,7 +74,6 @@
         android:layout_height="48dp"
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/bottomToolsTop"
-
         />
 
     <ImageView

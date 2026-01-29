@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.AppCompat.LikeCheckbox" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/like_color_selector</item>
+    </style>
+
+    <style name="Widget.AppCompat.LikeButton" parent="Widget.Material3.Button.TextButton.Icon">
+        <item name="iconTint">@color/like_color_selector</item>
+    </style>
+
+    <style name="Widget.AppCompat.ShareButton" parent="Widget.Material3.Button.TextButton.Icon">
+        <item name="iconTint">@color/main_color</item>
+        <item name="android:textColor">@color/main_color</item>
+    </style>
+
+    <style name="Widget.AppCompat.MoreButton" parent="Widget.Material3.Button.IconButton.Outlined">
+        <item name="iconTint">@color/main_color</item>
+        <item name="colorOutline">@color/main_color</item>
+    </style>
+
+</resources>
