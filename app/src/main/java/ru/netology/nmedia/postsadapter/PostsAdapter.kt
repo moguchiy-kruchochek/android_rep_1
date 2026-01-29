@@ -53,7 +53,7 @@ class PostViewHolder(
         likesButton.isChecked =  post.likedByMe
         likesButton.text = countersFormatting.toShorted(post.likes)
         shareButton.text = countersFormatting.toShorted(post.shared)
-        viewsCount.text = countersFormatting.toShorted(post.views)
+        viewsIcon.text = countersFormatting.toShorted(post.views)
 
         likesButton.setOnClickListener {
             onInteractionListener.onLike(post)

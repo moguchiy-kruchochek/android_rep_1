@@ -118,25 +118,21 @@
         app:icon="@drawable/ic_share_24"
          />
 
-    <ImageView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/viewsIcon"
+        style="@style/Widget.AppCompat.Views"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginStart="@dimen/common_spacing"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:enabled="false"
         android:contentDescription="@string/views_counter_icon"
-        app:layout_constraintEnd_toStartOf="@id/viewsCount"
-        app:layout_constraintTop_toBottomOf="@id/underContentBarrier"
-        app:srcCompat="@drawable/ic_views_24" />
-
-    <TextView
-        android:id="@+id/viewsCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/common_spacing"
-        android:layout_marginTop="30dp"
-        android:text="@string/views_count"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/underContentBarrier" />
+        app:layout_constraintTop_toBottomOf="@id/underContentBarrier"
+        app:icon="@drawable/ic_views_24"
+        android:text="2"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
