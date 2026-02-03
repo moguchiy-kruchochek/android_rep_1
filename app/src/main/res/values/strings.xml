@@ -15,4 +15,7 @@
     <string name="cancel_editing_text">Cancel edited</string>
     <string name="editing_icon">Editing icon</string>
     <string name="edit_text">Edit text</string>
+    <string name="chooser_share_post">Choose recipient</string>
+    <string name="add_post">Create_post</string>
+    <string name="video_preview">Video preview</string>
 </resources>

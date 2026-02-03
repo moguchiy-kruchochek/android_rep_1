@@ -24,4 +24,8 @@
         <item name="android:textColor">@color/buttons_main_color</item>
     </style>
 
+    <style name="Widget.AppCompat.PlayButton" parent="Widget.Material3.Button.IconButton">
+        <item name="iconTint">@color/white</item>
+        <item name="backgroundTint">#85000000</item>
+    </style>
 </resources>

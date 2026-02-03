@@ -16,5 +16,8 @@
     <string name="cancel_editing_text">Отмена редактирования</string>
     <string name="editing_icon">Иконка редактирования</string>
     <string name="edit_text">Изменение текста</string>
+    <string name="chooser_share_post">Кому отправим?</string>
+    <string name="add_post">Создать пост</string>
+    <string name="video_preview">Превью видео</string>
 
 </resources>

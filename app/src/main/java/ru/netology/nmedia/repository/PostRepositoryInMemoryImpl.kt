@@ -33,7 +33,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
                     "Желаем вам отличных праздников и замечательного отдыха!",
             likes = 999,
             shared = 1,
-            views = 2
+            views = 2,
+            video = "https://rutube.ru/video/e6ae7dfcf4af528bf10702d644e2b4a6/"
         ),
         Post(
             id = nextID++,
