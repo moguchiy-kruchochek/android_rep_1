@@ -52,6 +52,7 @@ class PostViewHolder(
         content.text = post.content
 
         if (post.video != null) groupVideoPreview.visibility = View.VISIBLE
+        else groupVideoPreview.visibility = View.GONE
 
         likesButton.isChecked =  post.likedByMe
         likesButton.text = countersFormatting.toShorted(post.likes)

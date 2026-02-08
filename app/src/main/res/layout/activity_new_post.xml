@@ -16,7 +16,7 @@
         android:gravity="top"
         android:padding="@dimen/common_spacing"
         android:importantForAutofill="no"
-        android:inputType="textImeMultiLine"
+        android:inputType="textMultiLine"
         android:layout_marginBottom="80dp"
         />
 
