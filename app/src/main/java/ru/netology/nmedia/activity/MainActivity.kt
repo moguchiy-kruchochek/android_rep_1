@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.add.setOnClickListener {
+            viewModel.cancelEdit()
             newPostLauncher.launch(null)
         }
 
