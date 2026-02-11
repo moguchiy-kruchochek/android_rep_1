@@ -1,45 +1,35 @@
-package ru.netology.nmedia.activity
+package ru.netology.nmedia.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import ru.netology.nmedia.R
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.launch
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import ru.netology.nmedia.databinding.ActivityMainBinding
-import ru.netology.nmedia.viewmodel.PostViewModel
-import androidx.activity.viewModels
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import ru.netology.nmedia.R
+import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.fragment.NewPostFragment.Companion.textArg
+import ru.netology.nmedia.fragment.PostCardFragment.Companion.idArg
 import ru.netology.nmedia.postsadapter.OnInteractionListener
 import ru.netology.nmedia.postsadapter.PostsAdapter
-import androidx.core.net.toUri
+import ru.netology.nmedia.viewmodel.PostViewModel
 
-class MainActivity : AppCompatActivity() {
+class FeedFragment : Fragment() {
 
-    private val viewModel: PostViewModel by viewModels()
-    val newPostLauncher = registerForActivityResult(NewPostContract) {
-        it ?: return@registerForActivityResult
-        viewModel.save(it)
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val binding = FragmentFeedBinding.inflate(layoutInflater)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(
-                systemBars.left, systemBars.top, systemBars.right, systemBars.bottom
-            )
-            insets
-        }
+        val viewModel: PostViewModel by activityViewModels()
 
         val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onLike(post: Post) {
@@ -62,9 +52,19 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
+            override fun onPostOpen(post: Post) {
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_postCardFragment,
+                    Bundle().apply { idArg = post.id }
+                )
+            }
+
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
-                newPostLauncher.launch(post.content)
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_newPostFragment,
+                    Bundle().apply { textArg = post.content }
+                )
             }
 
             override fun onRemove(post: Post) {
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         binding.recyclerContainer.adapter = adapter
-        viewModel.data.observe(this) { posts ->
+        viewModel.data.observe(viewLifecycleOwner) { posts ->
             val newPost = posts.size > adapter.currentList.size
             adapter.submitList(posts) {
                 if (newPost) {
@@ -85,9 +85,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.add.setOnClickListener {
             viewModel.cancelEdit()
-            newPostLauncher.launch(null)
+            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
-
+        return binding.root
     }
 }
+

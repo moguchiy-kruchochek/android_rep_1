@@ -7,15 +7,22 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
+import ru.netology.nmedia.databinding.AppActivityBinding
+import ru.netology.nmedia.fragment.NewPostFragment.Companion.textArg
 
-class IntentHandlerActivity : AppCompatActivity() {
+class AppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_intent_handler)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+
+        val binding = AppActivityBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.appContainer) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -27,12 +34,23 @@ class IntentHandlerActivity : AppCompatActivity() {
             }
             val text = it.getStringExtra(Intent.EXTRA_TEXT)
             if (text.isNullOrBlank()) {
-                Snackbar.make(findViewById<View>(R.id.main), R.string.error_empty_content, Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(
+                    findViewById<View>(R.id.main),
+                    R.string.error_empty_content,
+                    Snackbar.LENGTH_INDEFINITE
+                )
                     .setAction(android.R.string.ok) {
                         finish()
                     }
                     .show()
             }
+
+            val navHostFragment =
+                supportFragmentManager.findFragmentById(R.id.recyclerContainer) as NavHostFragment
+            navHostFragment.navController.navigate(
+                R.id.action_feedFragment_to_newPostFragment,
+                Bundle().apply { textArg = text }
+            )
         }
     }
 }
