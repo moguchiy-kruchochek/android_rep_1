@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ interface OnInteractionListener {
     fun onEdit(post: Post)
     fun onRemove(post: Post)
     fun onOpenWebPage(url: String?)
+    fun onPostOpen(post: Post)
 }
 
 class PostsAdapter(
@@ -25,9 +27,7 @@ class PostsAdapter(
 ) : ListAdapter<Post, PostViewHolder>(PostDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        return PostViewHolder(
-            PostCardBinding.inflate(
-                LayoutInflater.from(parent.context),
+        return PostViewHolder(PostCardBinding.inflate(LayoutInflater.from(parent.context),
                 parent,
                 false
             ), onInteractionListener
@@ -37,7 +37,6 @@ class PostsAdapter(
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
 }
 
 class PostViewHolder(
@@ -54,7 +53,7 @@ class PostViewHolder(
         if (post.video != null) groupVideoPreview.visibility = View.VISIBLE
         else groupVideoPreview.visibility = View.GONE
 
-        likesButton.isChecked =  post.likedByMe
+        likesButton.isChecked = post.likedByMe
         likesButton.text = countersFormatting.toShorted(post.likes)
         shareButton.text = countersFormatting.toShorted(post.shared)
         viewsIcon.text = countersFormatting.toShorted(post.views)
@@ -73,6 +72,10 @@ class PostViewHolder(
 
         playButton.setOnClickListener {
             onInteractionListener.onOpenWebPage(post.video)
+        }
+
+        binding.content.setOnClickListener {
+            onInteractionListener.onPostOpen(post)
         }
 
         moreButton.setOnClickListener {
