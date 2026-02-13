@@ -50,4 +50,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun removeById(id: Int) {
         repository.removeById(id)
     }
+    fun restoreById(id: Int) {
+        repository.restoreById(id)
+    }
 }

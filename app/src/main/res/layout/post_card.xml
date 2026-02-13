@@ -7,6 +7,14 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/common_spacing">
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/deletedPostItemsGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:constraint_referenced_ids="videoPreview,underVideoPreviewBarrier,playButton,
+            avatar,author,published,topBarrier,likesButton,shareButton,viewsIcon"
+        android:visibility="visible"
+        />
 
     <ImageView
         android:id="@+id/avatar"
@@ -66,29 +74,17 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="avatar, published" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollViewOfContent"
+    <TextView
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBarrier">
-
-        <TextView
-            android:id="@+id/content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_spacing"
-            android:layout_marginBottom="@dimen/common_spacing"
-            android:autoLink="web"
-            android:ellipsize="end"
-            android:maxLines="15"
-            tools:text="@sample/posts.json/data/content" />
-
-    </androidx.core.widget.NestedScrollView>
-
-
+        android:layout_marginTop="@dimen/common_spacing"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:autoLink="web"
+        android:ellipsize="end"
+        android:maxLines="15"
+        app:layout_constraintTop_toBottomOf="@id/topBarrier"
+        tools:text="@sample/posts.json/data/content" />
 
 
     <androidx.constraintlayout.widget.Group
@@ -104,7 +100,8 @@
         android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/video_preview"
-        app:layout_constraintTop_toBottomOf="@id/scrollViewOfContent"
+        android:layout_marginTop="@dimen/common_spacing"
+        app:layout_constraintTop_toBottomOf="@id/content"
         app:srcCompat="@drawable/pic_video_preview2" />
 
     <com.google.android.material.button.MaterialButton
@@ -114,6 +111,7 @@
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_play"
         app:iconSize="64dp"
+        android:contentDescription="@string/play"
         app:layout_constraintBottom_toBottomOf="@id/videoPreview"
         app:layout_constraintEnd_toEndOf="@id/videoPreview"
         app:layout_constraintStart_toStartOf="@id/videoPreview"
@@ -125,6 +123,7 @@
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="videoPreview" />
+
 
 
     <com.google.android.material.button.MaterialButton
@@ -139,7 +138,6 @@
         android:minHeight="0dp"
         android:text="10"
         app:icon="@drawable/ic_like_selector"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/shareButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/videoPreview" />
@@ -156,7 +154,6 @@
         android:minHeight="0dp"
         android:text="5"
         app:icon="@drawable/ic_share_24"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/likesButton"
         app:layout_constraintTop_toBottomOf="@id/videoPreview" />
 
@@ -172,7 +169,6 @@
         android:minHeight="0dp"
         android:text="2"
         app:icon="@drawable/ic_views_24"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/videoPreview" />
 

@@ -73,6 +73,10 @@ class PostRepositorySharedPrefsImpl(context: Context) : PostRepository {
         data.value = posts
     }
 
+    override fun restoreById(id: Int) {
+        TODO("Not yet implemented")
+    }
+
     companion object {
         private const val KEY_POSTS = "posts"
         private val gson = Gson()

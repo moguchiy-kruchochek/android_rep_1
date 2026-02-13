@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.CountersFormatting
 import ru.netology.nmedia.R
-import ru.netology.nmedia.databinding.PostCardBinding
+import ru.netology.nmedia.databinding.FragmentPostBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.fragment.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.util.IdArg
@@ -21,7 +21,6 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 class PostCardFragment : Fragment() {
 
     val countersFormatting = CountersFormatting()
-
 
     companion object {
         var Bundle.idArg by IdArg
@@ -33,7 +32,7 @@ class PostCardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val binding = PostCardBinding.inflate(layoutInflater)
+        val binding = FragmentPostBinding.inflate(layoutInflater)
         val viewModel: PostViewModel by activityViewModels()
         var post = Post(
             id = 0,
@@ -48,8 +47,6 @@ class PostCardFragment : Fragment() {
 
         val postId = arguments?.idArg
 
-
-
         viewModel.data.observe(viewLifecycleOwner) { posts ->
             post = posts.firstOrNull { it.id == postId }
                 ?: run {
@@ -58,12 +55,11 @@ class PostCardFragment : Fragment() {
                         "Пост не найден или был удален",
                         Snackbar.LENGTH_LONG
                     ).show()
-
                     findNavController().popBackStack()
                     return@observe
                 }
             post.let {
-                with(binding) {
+                with(binding.includedPostCard) {
                     author.text = it.author
                     published.text = it.published
                     content.text = it.content
@@ -82,48 +78,58 @@ class PostCardFragment : Fragment() {
             }
         }
 
-        binding.likesButton.setOnClickListener { viewModel.likeById(post.id) }
+        with(binding.includedPostCard) {
+            likesButton.setOnClickListener { viewModel.likeById(post.id) }
 
-        binding.shareButton.setOnClickListener {
-            val intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, post.content)
-            }
-            val chooser = Intent.createChooser(intent, getString(R.string.chooser_share_post))
-            startActivity(chooser)
-        }
-
-        binding.moreButton.setOnClickListener {
-            PopupMenu(it.context, it).apply {
-                inflate(R.menu.post_options)
-                setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-
-                        R.id.edit -> {
-                            viewModel.edit(post)
-                            findNavController().navigate(
-                                R.id.action_postCardFragment_to_newPostFragment,
-                                Bundle().apply { textArg = post.content }
-                            )
-                            true
-                        }
-
-                        R.id.remove -> {
-                            viewModel.removeById(post.id)
-                            true
-                        }
-
-                        else -> false
-                    }
+            shareButton.setOnClickListener {
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, post.content)
                 }
-            }.show()
+                val chooser = Intent.createChooser(intent, getString(R.string.chooser_share_post))
+                startActivity(chooser)
+            }
+
+            moreButton.setOnClickListener {
+                PopupMenu(it.context, it).apply {
+                    inflate(R.menu.post_options)
+
+                    menu.findItem(R.id.restore).isVisible = false
+
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+
+                            R.id.edit -> {
+                                viewModel.edit(post)
+                                findNavController().navigate(
+                                    R.id.action_postCardFragment_to_newPostFragment,
+                                    Bundle().apply { textArg = post.content }
+                                )
+                                true
+                            }
+
+                            R.id.remove -> {
+                                viewModel.removeById(post.id)
+                                Snackbar.make(
+                                    binding.root,
+                                    "Пост не найден или был удален",
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                                findNavController().popBackStack()
+                                true
+                            }
+
+                            else -> false
+                        }
+                    }
+                }.show()
+            }
         }
 
         return binding.root
 
     }
-
 }
 
 
