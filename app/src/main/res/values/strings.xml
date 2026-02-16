@@ -18,4 +18,6 @@
     <string name="chooser_share_post">Choose recipient</string>
     <string name="add_post">Create_post</string>
     <string name="video_preview">Video preview</string>
+    <string name="play">Play</string>
+    <string name="restore">Restore</string>
 </resources>

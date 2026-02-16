@@ -34,15 +34,15 @@ class PostRepositoryFilesImpl(private val context: Context) : PostRepository {
         }
     }
 
-
     override fun getData(): LiveData<List<Post>> = data
 
+
     override fun likeById(id: Int) {
-        posts = posts.map {
-            if (it.id != id) it
-            else it.copy(
-                likedByMe = !it.likedByMe,
-                likes = if (!it.likedByMe) it.likes + 1 else it.likes - 1
+        posts = posts.map { post ->
+            if (post.id != id) post
+            else post.copy(
+                likedByMe = !post.likedByMe,
+                likes = if (!post.likedByMe) post.likes + 1 else post.likes - 1
             )
         }
         data.value = posts
@@ -70,7 +70,16 @@ class PostRepositoryFilesImpl(private val context: Context) : PostRepository {
     }
 
     override fun removeById(id: Int) {
-        posts = posts.filter { id != it.id }
+        posts = posts.map { post ->
+            if (post.id != id) post else post.copy(isDeleted = true)
+        }
+        data.value = posts
+    }
+
+    override fun restoreById(id: Int) {
+        posts = posts.map { post ->
+            if (post.id != id) post else post.copy(isDeleted = false)
+        }
         data.value = posts
     }
 

@@ -16,8 +16,10 @@ interface OnInteractionListener {
     fun onLike(post: Post)
     fun onShare(post: Post)
     fun onEdit(post: Post)
-    fun onRemove(post: Post)
+    fun onRemove(id: Int)
+    fun onRestore(id: Int)
     fun onOpenWebPage(url: String?)
+    fun onPostOpen(post: Post)
 }
 
 class PostsAdapter(
@@ -37,7 +39,6 @@ class PostsAdapter(
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
 }
 
 class PostViewHolder(
@@ -47,6 +48,14 @@ class PostViewHolder(
 
     val countersFormatting = CountersFormatting()
     fun bind(post: Post) = with(binding) {
+
+        moreButtonSetup(post)
+        if (post.isDeleted) {
+            content.text = "Пост был удален"
+            deletedPostItemsGroup.visibility = View.GONE
+            return
+        }
+
         author.text = post.author
         published.text = post.published
         content.text = post.content
@@ -54,7 +63,8 @@ class PostViewHolder(
         if (post.video != null) groupVideoPreview.visibility = View.VISIBLE
         else groupVideoPreview.visibility = View.GONE
 
-        likesButton.isChecked =  post.likedByMe
+        likesButton.isChecked = post.likedByMe
+
         likesButton.text = countersFormatting.toShorted(post.likes)
         shareButton.text = countersFormatting.toShorted(post.shared)
         viewsIcon.text = countersFormatting.toShorted(post.views)
@@ -75,19 +85,39 @@ class PostViewHolder(
             onInteractionListener.onOpenWebPage(post.video)
         }
 
-        moreButton.setOnClickListener {
+        binding.content.setOnClickListener {
+            onInteractionListener.onPostOpen(post)
+        }
+
+    }
+
+    fun moreButtonSetup(post: Post) {
+        binding.moreButton.setOnClickListener {
             PopupMenu(it.context, it).apply {
                 inflate(R.menu.post_options)
+
+                menu.apply {
+                    findItem(R.id.edit).isVisible = !post.isDeleted
+                    findItem(R.id.remove).isVisible = !post.isDeleted
+                    findItem(R.id.restore).isVisible = post.isDeleted
+                }
                 setOnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.edit -> {
                             onInteractionListener.onEdit(post)
                             true
                         }
+
                         R.id.remove -> {
-                            onInteractionListener.onRemove(post)
+                            onInteractionListener.onRemove(post.id)
                             true
                         }
+
+                        R.id.restore -> {
+                            onInteractionListener.onRestore(post.id)
+                            true
+                        }
+
                         else -> false
                     }
                 }

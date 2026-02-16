@@ -19,5 +19,7 @@
     <string name="chooser_share_post">Кому отправим?</string>
     <string name="add_post">Создать пост</string>
     <string name="video_preview">Превью видео</string>
+    <string name="play">Воспроизвести</string>
+    <string name="restore">Восстановить</string>
 
 </resources>

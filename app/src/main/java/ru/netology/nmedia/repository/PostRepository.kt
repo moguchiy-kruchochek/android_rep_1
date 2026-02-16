@@ -9,5 +9,7 @@ interface PostRepository {
     fun likeById(id: Int)
     fun share(id: Int)
     fun removeById(id: Int)
+    fun restoreById(id: Int)
     fun save(post: Post)
+//    fun cancelRemove(id: Int)
 }

@@ -93,4 +93,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
         posts = posts.filter { id != it.id }
         data.value = posts
     }
+
+    override fun restoreById(id: Int) {
+        TODO("Not yet implemented")
+    }
 }
