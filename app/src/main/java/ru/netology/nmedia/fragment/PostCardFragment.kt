@@ -29,6 +29,7 @@ class PostCardFragment : Fragment() {
         }
 
         override fun onShare(post: Post) {
+            viewModel.share(post.id)
             val intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 type = "text/plain"
@@ -42,12 +43,8 @@ class PostCardFragment : Fragment() {
             viewModel.edit(post)
         }
 
-        override fun onRemove(id: Int) {
-            viewModel.removeById(id)
-        }
-
-        override fun onRestore(id: Int) {
-            viewModel.restoreById(id)
+        override fun onSoftDelete(id: Int) {
+            viewModel.softDeleteById(id)
         }
 
         override fun onOpenWebPage(url: String?) {
@@ -57,6 +54,8 @@ class PostCardFragment : Fragment() {
         }
 
         override fun onPostOpen(post: Post) {}
+
+        override fun onHardDelete(id: Int) {}
     }
 
     companion object {
@@ -88,8 +87,8 @@ class PostCardFragment : Fragment() {
                     return@observe
                 }
             post.let {
+                if (post.isDeleted) findNavController().popBackStack()
                 postViewHolder.bind(post)
-
             }
         }
         return binding.root

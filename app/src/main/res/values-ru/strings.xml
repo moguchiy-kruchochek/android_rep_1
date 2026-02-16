@@ -21,5 +21,6 @@
     <string name="video_preview">Превью видео</string>
     <string name="play">Воспроизвести</string>
     <string name="restore">Восстановить</string>
+    <string name="Erase">Удалить навсегда</string>
 
 </resources>

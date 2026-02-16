@@ -36,6 +36,7 @@ class FeedFragment : Fragment() {
             }
 
             override fun onShare(post: Post) {
+                viewModel.share(post.id)
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     type = "text/plain"
@@ -66,12 +67,12 @@ class FeedFragment : Fragment() {
                 )
             }
 
-            override fun onRemove(id: Int) {
-                viewModel.removeById(id)
+            override fun onSoftDelete(id: Int) {
+                viewModel.softDeleteById(id)
             }
 
-            override fun onRestore(id: Int) {
-                viewModel.restoreById(id)
+            override fun onHardDelete(id: Int) {
+                viewModel.hardDeleteById(id)
             }
         }
         )
@@ -88,7 +89,10 @@ class FeedFragment : Fragment() {
 
         binding.add.setOnClickListener {
             viewModel.cancelEdit()
-            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+            findNavController().navigate(
+                R.id.action_feedFragment_to_newPostFragment,
+                Bundle().apply { textArg = null }
+            )
         }
 
         return binding.root
