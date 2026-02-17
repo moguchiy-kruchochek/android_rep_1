@@ -13,4 +13,9 @@
         android:id="@+id/restore"
         android:title="@string/restore"
         />
+
+    <item
+        android:id="@+id/erase"
+        android:title="@string/Erase"
+        />
 </menu>

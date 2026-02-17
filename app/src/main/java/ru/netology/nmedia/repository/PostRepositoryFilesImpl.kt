@@ -52,7 +52,7 @@ class PostRepositoryFilesImpl(private val context: Context) : PostRepository {
         posts = posts.map {
             if (it.id != id) it
             else it.copy(
-                shared = it.shared + 1
+                share = it.share + 1
             )
         }
         data.value = posts
@@ -69,16 +69,14 @@ class PostRepositoryFilesImpl(private val context: Context) : PostRepository {
         data.value = posts
     }
 
-    override fun removeById(id: Int) {
-        posts = posts.map { post ->
-            if (post.id != id) post else post.copy(isDeleted = true)
-        }
+    override fun hardDeleteById(id: Int) {
+        posts = posts.filter { it.id != id }
         data.value = posts
     }
 
-    override fun restoreById(id: Int) {
+    override fun softDeleteById(id: Int) {
         posts = posts.map { post ->
-            if (post.id != id) post else post.copy(isDeleted = false)
+            if (post.id != id) post else post.copy(isDeleted = !post.isDeleted)
         }
         data.value = posts
     }

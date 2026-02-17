@@ -1,5 +1,6 @@
 package ru.netology.nmedia.postsadapter
 
+import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +12,15 @@ import ru.netology.nmedia.CountersFormatting
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.PostCardBinding
 import ru.netology.nmedia.dto.Post
+import java.util.Date
+import java.util.Locale
 
 interface OnInteractionListener {
     fun onLike(post: Post)
     fun onShare(post: Post)
     fun onEdit(post: Post)
-    fun onRemove(id: Int)
-    fun onRestore(id: Int)
+    fun onSoftDelete(id: Int)
+    fun onHardDelete(id: Int)
     fun onOpenWebPage(url: String?)
     fun onPostOpen(post: Post)
 }
@@ -49,15 +52,20 @@ class PostViewHolder(
     val countersFormatting = CountersFormatting()
     fun bind(post: Post) = with(binding) {
 
-        moreButtonSetup(post)
+        moreButtonAndListenersSetup(post)
+
         if (post.isDeleted) {
             content.text = "Пост был удален"
             deletedPostItemsGroup.visibility = View.GONE
             return
         }
+        deletedPostItemsGroup.visibility = View.VISIBLE
 
         author.text = post.author
-        published.text = post.published
+        published.text = SimpleDateFormat(
+            "dd.MM.yyyy HH:mm",
+            Locale.getDefault()
+        ).format(Date(post.published))
         content.text = post.content
 
         if (post.video != null) groupVideoPreview.visibility = View.VISIBLE
@@ -66,7 +74,7 @@ class PostViewHolder(
         likesButton.isChecked = post.likedByMe
 
         likesButton.text = countersFormatting.toShorted(post.likes)
-        shareButton.text = countersFormatting.toShorted(post.shared)
+        shareButton.text = countersFormatting.toShorted(post.share)
         viewsIcon.text = countersFormatting.toShorted(post.views)
 
         likesButton.setOnClickListener {
@@ -88,40 +96,54 @@ class PostViewHolder(
         binding.content.setOnClickListener {
             onInteractionListener.onPostOpen(post)
         }
-
     }
 
-    fun moreButtonSetup(post: Post) {
-        binding.moreButton.setOnClickListener {
-            PopupMenu(it.context, it).apply {
-                inflate(R.menu.post_options)
+    fun moreButtonAndListenersSetup(post: Post) {
+        with(binding) {
+            moreButton.setOnClickListener(null)
+            content.setOnClickListener(null)
+            likesButton.setOnClickListener(null)
+            shareButton.setOnClickListener(null)
+            videoPreview.setOnClickListener(null)
+            playButton.setOnClickListener(null)
 
-                menu.apply {
-                    findItem(R.id.edit).isVisible = !post.isDeleted
-                    findItem(R.id.remove).isVisible = !post.isDeleted
-                    findItem(R.id.restore).isVisible = post.isDeleted
-                }
-                setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.edit -> {
-                            onInteractionListener.onEdit(post)
-                            true
-                        }
+            moreButton.setOnClickListener {
+                PopupMenu(it.context, it).apply {
+                    inflate(R.menu.post_options)
 
-                        R.id.remove -> {
-                            onInteractionListener.onRemove(post.id)
-                            true
-                        }
-
-                        R.id.restore -> {
-                            onInteractionListener.onRestore(post.id)
-                            true
-                        }
-
-                        else -> false
+                    menu.apply {
+                        findItem(R.id.edit).isVisible = !post.isDeleted
+                        findItem(R.id.remove).isVisible = !post.isDeleted
+                        findItem(R.id.restore).isVisible = post.isDeleted
+                        findItem(R.id.erase).isVisible = post.isDeleted
                     }
-                }
-            }.show()
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.edit -> {
+                                onInteractionListener.onEdit(post)
+                                true
+                            }
+
+                            R.id.remove -> {
+                                onInteractionListener.onSoftDelete(post.id)
+                                true
+                            }
+
+                            R.id.restore -> {
+                                onInteractionListener.onSoftDelete(post.id)
+                                true
+                            }
+
+                            R.id.erase -> {
+                                onInteractionListener.onHardDelete(post.id)
+                                true
+                            }
+
+                            else -> false
+                        }
+                    }
+                }.show()
+            }
         }
     }
 }
