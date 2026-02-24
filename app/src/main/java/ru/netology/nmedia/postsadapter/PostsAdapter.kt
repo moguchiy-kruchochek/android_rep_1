@@ -50,7 +50,7 @@ class PostViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     val countersFormatting = CountersFormatting()
-    fun bind(post: Post) = with(binding) {
+    fun bind(post: Post): Unit = with(binding) {
 
         moreButtonAndListenersSetup(post)
 
