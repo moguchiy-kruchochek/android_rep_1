@@ -22,5 +22,10 @@
     <string name="play">Воспроизвести</string>
     <string name="restore">Восстановить</string>
     <string name="Erase">Удалить навсегда</string>
+    <string name="google_play_unavailable">Сервис GooglePlay недоступен</string>
+    <string name="channel_remote_name">Уведомления с сервера</string>
+    <string name="channel_remote_description">Уведомления с удалённого сервера</string>
+    <string name="notification_user_liked">%1$s поставил лайк посту %2$s</string>
+    <string name="notification_new_post_dropped">%1$s выложил новый пост</string>
 
 </resources>
